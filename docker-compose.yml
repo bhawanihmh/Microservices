@@ -1,0 +1,84 @@
+version: "3.5"
+services:
+  discovery:
+    build: ./discovery-service
+    restart: always
+    networks:
+      - skylark
+    ports:
+      - "8761:8761"
+  monitoring:
+    build: ./monitoring-service
+    restart: always
+    networks:
+      - skylark
+    ports:
+      - "9999:9999"
+    environment:
+      EUREKA_SERVER: discovery
+    depends_on:
+      - discovery
+  admin:
+    build: ./admin-service
+    restart: always
+    networks:
+      - skylark
+    ports:
+      - "10000:10000"
+    environment:
+      EUREKA_SERVER: discovery
+    depends_on:
+      - discovery
+  routing:
+    build: ./routing-service
+    restart: always
+    networks:
+      - skylark
+    ports:
+      - "10100:10100"
+    environment:
+      EUREKA_SERVER: discovery
+    depends_on:
+      - discovery
+  application-1:
+    build: ./application-service
+    restart: always
+    networks:
+      - skylark
+    ports:
+      - "10200:10200"
+    environment:
+      APP_SERVICE_NAME: app-one-service
+      APP_SERVICE_PORT: 10200
+      EUREKA_SERVER: discovery
+    depends_on:
+      - discovery
+  application-2:
+    build: ./application-service
+    restart: always
+    networks:
+      - skylark
+    ports:
+      - "10300:10300"
+    environment:
+      APP_SERVICE_NAME: app-two-service
+      APP_SERVICE_PORT: 10300
+      EUREKA_SERVER: discovery
+    depends_on:
+      - discovery
+  application-3:
+    build: ./application-service
+    restart: always
+    networks:
+      - skylark
+    ports:
+      - "10400:10400"
+    environment:
+      APP_SERVICE_NAME: app-three-service
+      APP_SERVICE_PORT: 10400
+      EUREKA_SERVER: discovery
+    depends_on:
+      - discovery
+networks:
+  skylark:
+    name: mocroservices

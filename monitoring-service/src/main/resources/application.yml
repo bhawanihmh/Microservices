@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: monitoring-service
+server.port: 9999
+
+# To disable the Consul Discovery Client
+#spring.cloud.consul.discovery.enabled: false
+
+# To disable the service registration
+# spring.cloud.consul.discovery.register: false
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${EUREKA_SERVER:localhost}:8761/eureka/
+  instance:
+    hostname: localhost
+    preferIpAddress: false
+
+turbine:
+#  aggregator:
+#    clusterConfig: BOOKING-SERVICE
+  appConfig: application-service
+  clusterNameExpression: "'default'"
+#  instanceUrlSuffix.default: actuator/hystrix.stream
+#  combineHostPort: false
+
+logging:
+  level:
+    com.netflix.turbine: INFO
+  file: logs/${spring.application.name}.log
+  pattern:
+    file: >-
+      %clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} %clr(---)
+      {faint}%clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx
+
+swagger:
+  config:
+    refreshrate: 3600000

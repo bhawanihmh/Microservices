@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>vazem.microservice</groupId>
+	<artifactId>reactive-service</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>reactive-service</name>
+	<description>REST based reactive web application</description>
+
+	<parent>
+		<groupId>vazem.microservices</groupId>
+		<artifactId>micro-service-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<properties>
+		<java-api-version>1.0.0-SNAPSHOT</java-api-version>
+		<spring-boot-r2dbc.version>0.1.0.M2</spring-boot-r2dbc.version>
+		<feign-reactor.version>1.0.30</feign-reactor.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>vazem.microservices</groupId>
+			<artifactId>java-api</artifactId>
+			<version>${java-api-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.playtika.reactivefeign</groupId>
+			<artifactId>feign-reactor-spring-configuration</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.playtika.reactivefeign</groupId>
+			<artifactId>feign-reactor-webclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.playtika.reactivefeign</groupId>
+			<artifactId>feign-reactor-cloud</artifactId>
+		</dependency>
+
+<!--	<dependency>-->
+<!--		<groupId>com.netflix.feign</groupId>-->
+<!--		<artifactId>feign-slf4j</artifactId>-->
+<!--		<version>8.18.0</version>-->
+<!--	</dependency>-->
+<!--	<dependency>-->
+<!--		<groupId>org.springframework.boot.experimental</groupId>-->
+<!--		<artifactId>spring-boot-actuator-r2dbc</artifactId>-->
+<!--	</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot.experimental</groupId>
+			<artifactId>spring-boot-starter-data-r2dbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.r2dbc</groupId>
+			<artifactId>r2dbc-h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot.experimental</groupId>
+			<artifactId>spring-boot-test-autoconfigure-r2dbc</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot.experimental</groupId>
+				<artifactId>spring-boot-bom-r2dbc</artifactId>
+				<version>${spring-boot-r2dbc.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.playtika.reactivefeign</groupId>
+				<artifactId>feign-reactor</artifactId>
+				<version>${feign-reactor.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+</project>

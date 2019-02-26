@@ -1,0 +1,81 @@
+spring:
+  application:
+    name: routing-service
+server.port: 10100
+
+management:
+  endpoints.web.exposure.include: "*"
+#  endpoints.routes.enabled: true
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://${EUREKA_SERVER:localhost}:8761/eureka/
+  instance:
+    hostname: localhost
+    preferIpAddress: false
+
+zuul:
+  prefix: /api          # To add a prefix to all mappings
+  stripPrefix: true    # By default, the proxy prefix is stripped from the request before the request is forwarded
+  addProxyHeaders: false
+
+  ignoredHeaders:       # Default is empty but get initialized if spring-security is in classpath
+  ignoreSecurityHeaders: false    # Default: true. Set false to allow security headers pass from proxy to downstream
+
+  sensitiveHeaders:    # Explicitly need to set blank to override defaults in order to send all headers
+
+  ignoredPatterns: /**/admin/**
+#  route.home: /         # Points to this own service (routing service)
+
+#  host:
+#    connect-timeout-millis:
+#    max-per-route-connections:
+#    max-total-connections:
+
+  routes:
+    booking:
+      retryable: true
+      path: /v1/accounts/**
+      serviceId: booking-service
+      stripPrefix: false          # Global 'zuul.stripPrefix' is true by default.
+    first:
+      retryable: true
+      path: /v1/accounts/**
+      serviceId: app-one-service
+      stripPrefix: false
+    second:
+      retryable: true
+      path: /v2/accounts/**
+      serviceId: app-two-service
+      stripPrefix: false
+    third:
+      retryable: true
+      path: /v3/accounts/**
+      serviceId: app-three-service
+      stripPrefix: false
+    users:
+      path: /myusers/**
+      sensitiveHeaders: Cookie,Set-Cookie,Authorization
+      url: https://downstream
+
+# --- To use ribbon config instead of eureka service discovery ---
+
+#ribbon:
+#  eureka:
+#    enabled: false
+#
+#booking:
+#  ribbon:
+#    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+#    listOfServers: localhost:10200,localhost:10201
+#    ConnectTimeout: 1000
+#    ReadTimeout: 3000
+#    MaxTotalHttpConnections: 500
+#    MaxConnectionsPerHost: 100
+
+logging:
+  level:
+    com.netflix.loadbalancer.LoadBalancerContext: DEBUG

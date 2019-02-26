@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: booking-service
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
+server.port: 10200
+
+# To disable the Consul Discovery Client
+#spring.cloud.consul.discovery.enabled: false
+
+# To disable the service registration
+# spring.cloud.consul.discovery.register: false
+
+#spring.boot.admin.client.url: http://localhost:10000
+management:
+  endpoints.web.exposure.include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/  # Needs to be in bootstrap iff we use eureka to locate config else it can be in application.yml
+  instance:
+    hostname: localhost
+    preferIpAddress: false
+#    metadata-map:
+#      management.port: ${management.port:8080}
+
+logging:
+  level:
+    com.netflix.turbine: NONE
+  file: logs/booking-service.log
+  pattern:
+    file: >-
+      %clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} %clr(---)
+      {faint}%clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx
+
