@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: booking-service
+server.port: 0 # for random port
+
+# To disable the Consul Discovery Client
+#spring.cloud.consul.discovery.enabled: false
+
+# To disable the service registration
+# spring.cloud.consul.discovery.register: false
+
